@@ -1,47 +1,60 @@
-<x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
+    <!-- Optional: Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
+    <!-- Icons (Font Awesome CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body class="flex items-center justify-center min-h-screen bg-gray-100">
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+    <div class="w-full max-w-md p-8 bg-white rounded-lg shadow-md">
+        <h2 class="text-2xl font-bold text-center mb-6">Login</h2>
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
+        @if (session('error'))
+            <div class="mb-4 text-red-600 text-sm">
+                {{ session('error') }}
+            </div>
+        @endif
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
+        <form method="POST" action="{{ route('login') }}">
+            @csrf
 
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800" name="remember">
-                <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
-            </label>
-        </div>
+            <div class="mb-4">
+                <label for="email" class="block mb-1 font-medium text-sm text-gray-700">Email</label>
+                <div class="flex items-center border rounded px-3 py-2">
+                    <i class="fa fa-envelope text-gray-400 mr-2"></i>
+                    <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus class="w-full focus:outline-none">
+                </div>
+            </div>
 
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
+            <div class="mb-4">
+                <label for="password" class="block mb-1 font-medium text-sm text-gray-700">Password</label>
+                <div class="flex items-center border rounded px-3 py-2">
+                    <i class="fa fa-lock text-gray-400 mr-2"></i>
+                    <input id="password" type="password" name="password" required class="w-full focus:outline-none">
+                </div>
+            </div>
 
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+            <div class="mb-4 flex items-center justify-between">
+                <label class="inline-flex items-center">
+                    <input type="checkbox" name="remember" class="form-checkbox">
+                    <span class="ml-2 text-sm text-gray-600">Remember me</span>
+                </label>
+            </div>
+
+            <div class="mb-4">
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded">
+                    Login
+                </button>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>
