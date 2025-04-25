@@ -22,32 +22,24 @@
                 </div>
             @endif
 
-            <div
-                class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg flex flex-col gap-2 md:flex-row p-2 h-fit">
-
-                <div
-                    class="bg-neutral-200 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 overflow-hidden shadow-lg sm:rounded-lg w-full h-full overflow-y-auto col-span-1">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-2 h-fit">
+                <div class="bg-neutral-200 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 overflow-hidden shadow-lg sm:rounded-lg w-full h-full overflow-y-auto">
                     <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 h-full">
                         <thead>
                             <tr>
-                                <th
-                                    class="px-6 py-3 bg-gray-50 dark:bg-gray-900 text-left text-xs leading-4 font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                <th class="px-6 py-3 bg-gray-50 dark:bg-gray-900 text-left text-xs leading-4 font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                     Nama Produk
                                 </th>
-                                <th
-                                    class="px-6 py-3 bg-gray-50 dark:bg-gray-900 text-left text-xs leading-4 font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                <th class="px-6 py-3 bg-gray-50 dark:bg-gray-900 text-left text-xs leading-4 font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                     Harga
                                 </th>
-                                <th
-                                    class="px-6 py-3 bg-gray-50 dark:bg-gray-900 text-left text-xs leading-4 font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                <th class="px-6 py-3 bg-gray-50 dark:bg-gray-900 text-left text-xs leading-4 font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                     Jumlah
                                 </th>
-                                <th
-                                    class="px-6 py-3 bg-gray-50 dark:bg-gray-900 text-left text-xs leading-4 font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                <th class="px-6 py-3 bg-gray-50 dark:bg-gray-900 text-left text-xs leading-4 font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                     Total Harga
                                 </th>
-                                <th
-                                    class="px-6 py-3 bg-gray-50 dark:bg-gray-900 text-left text-xs leading-4 font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                <th class="px-6 py-3 bg-gray-50 dark:bg-gray-900 text-left text-xs leading-4 font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                     Aksi
                                 </th>
                             </tr>
@@ -59,18 +51,15 @@
                                         {{ $item->produk->nama_produk }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
-                                        {{ $item->produk->harga }}
+                                        Rp {{ number_format($item->produk->harga, 0, ',', '.') }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
                                         {{ $item->jumlah }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
-                                        {{ $item->total_harga }}
+                                        Rp {{ number_format($item->total_harga, 0, ',', '.') }}
                                     </td>
-                                    <td
-                                        class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300 flex items-center space-x-3">
-
-                                        <!-- Icon Hapus (Trash icon) -->
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300 flex items-center space-x-3">
                                         <form action="{{ route('keranjang.destroy', $item) }}" method="POST"
                                             onsubmit="return confirm('Yakin ingin menghapus?')" class="inline">
                                             @csrf
@@ -103,21 +92,27 @@
                                     </a>
                                 </td>
                             </tr>
+                            <tr class="bg-gray-50 dark:bg-gray-700">
+                                <td colspan="3" class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-800 dark:text-gray-200">
+                                    Total Harga:
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-800 dark:text-gray-200">
+                                    Rp {{ number_format($total_belanja, 0, ',', '.') }}
+                                </td>
+                                <td></td>
+                            </tr>
                         </tbody>
                     </table>
-                </div>
 
-                <div
-                    class="bg-neutral-200 dark:bg-gray-800 overflow-hidden shadow-lg sm:rounded-lg flex flex-col gap-4 h-full w-full md:w-[35%] p-4 border border-gray-200 dark:border-gray-700">
-                    <p class="font-semibold text-lg text-gray-800 dark:text-gray-200 leading-loose text-nowrap">
-                        Total Harga: {{ $total_belanja }}
-                    </p>
-
-                    <form action="{{ route('keranjang.checkout') }}" method="POST">
-                        @csrf
-                        <button type="submit"
-                            class="px-4 py-2 rounded bg-green-600 hover:bg-green-700 text-white font-semibold">Bayar</button>
-                    </form>
+                    <div class="p-4 border-t border-gray-200 dark:border-gray-700">
+                        <form action="{{ route('keranjang.checkout') }}" method="POST">
+                            @csrf
+                            <button type="submit"
+                                class="w-full px-4 py-2 rounded bg-green-600 hover:bg-green-700 text-white font-semibold">
+                                Bayar Sekarang
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -146,7 +141,6 @@
         </div>
     </div>
 
-    {{-- Script JavaScript --}}
     <script>
         function openDeleteModal(itemId) {
             const modal = document.getElementById('deleteModal');

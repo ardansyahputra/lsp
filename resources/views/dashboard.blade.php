@@ -89,7 +89,7 @@
                     <div class="p-6">
                         <div class="flex items-center justify-between">
                             <div>
-                                <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Transaksi</p>
+                                <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Keranjang</p>
                                 <h3 class="text-3xl font-bold text-gray-900 dark:text-white mt-1"></h3>
                             </div>
                             <div class="bg-amber-100 dark:bg-amber-900 p-3 rounded-lg">
@@ -99,7 +99,7 @@
                             </div>
                         </div>
                         <div class="mt-4">
-                            <a href="/transaksi" class="text-sm font-medium text-amber-600 dark:text-amber-400 hover:text-amber-500 dark:hover:text-amber-300">
+                            <a href="/keranjang" class="text-sm font-medium text-amber-600 dark:text-amber-400 hover:text-amber-500 dark:hover:text-amber-300">
                                 Lihat semua transaksi →
                             </a>
                         </div>
