@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Transaksi;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf; // Tambahkan ini di atas controller kamu
 
 class TransaksiController extends Controller
 {
@@ -61,6 +62,15 @@ class TransaksiController extends Controller
     public function update(Request $request, Transaksi $transaksi)
     {
         //
+    }
+
+    public function downloadStruk($id)
+    {
+        $transaksi = Transaksi::with('items.produk')->findOrFail($id);
+
+        $pdf = Pdf::loadView('transaksi.struk-pdf', compact('transaksi'));
+
+        return $pdf->download('struk_transaksi_'.$transaksi->id.'.pdf');
     }
 
     /**

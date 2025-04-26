@@ -84,13 +84,12 @@
                                 </tr>
                             @endforelse
                             <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300"
-                                    colspan="9">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300" colspan="9">
                                     <a href="{{ route('keranjang.create') }}"
-                                        class="text-blue-600 hover:text-blue-900 underline">
+                                        class="inline-block px-4 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition">
                                         + Tambahkan produk ke keranjang belanja
                                     </a>
-                                </td>
+                                </td>                                
                             </tr>
                             <tr class="bg-gray-50 dark:bg-gray-700">
                                 <td colspan="3" class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-800 dark:text-gray-200">

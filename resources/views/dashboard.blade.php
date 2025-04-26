@@ -37,6 +37,18 @@
             </div>
         </div>
 
+<!-- Grafik Jumlah Transaksi per Bulan -->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 mb-10">
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
+                <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Grafik Jumlah Transaksi (Per Bulan)</h3>
+                </div>
+                <div class="p-6">
+                    <canvas id="countChart" height="100"></canvas>
+                </div>
+            </div>
+        </div>
+
         <!-- Stats Cards -->
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -108,8 +120,20 @@
             </div>
         </div>
 
-        <!-- Recent Activity Section -->
+        <!-- Transaction Chart -->
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
+                <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Grafik Transaksi (Rupiah per Bulan)</h3>
+                </div>
+                <div class="p-6">
+                    <canvas id="transactionChart" height="100"></canvas>
+                </div>
+            </div>
+        </div>
+
+         <!-- Recent Activity Section -->
+         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
             <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
                 <div class="p-6 border-b border-gray-200 dark:border-gray-700">
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Aktivitas Terkini</h3>
@@ -122,5 +146,91 @@
                 </div>
             </div>
         </div>
+
+        <!-- Chart.js CDN -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            const ctx = document.getElementById('transactionChart').getContext('2d');
+            const transactionChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: @json($transactionMonths),
+                    datasets: [{
+                        label: 'Jumlah Transaksi (Rp)',
+                        data: @json($transactionTotals),
+                        backgroundColor: 'rgba(99, 102, 241, 0.3)',
+                        borderColor: 'rgba(99, 102, 241, 1)',
+                        borderWidth: 2,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            ticks: {
+                                beginAtZero: true,
+                                callback: function(value) {
+                                    return 'Rp' + value.toLocaleString();
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Count Chart (Jumlah Transaksi per Bulan)
+            const countCtx = document.getElementById('countChart').getContext('2d');
+            const countChart = new Chart(countCtx, {
+                type: 'line',
+                data: {
+                    labels: @json($transactionMonths),
+                    datasets: [{
+                        label: 'Jumlah Transaksi',
+                        data: @json($transactionCounts),
+                        backgroundColor: 'rgba(16, 185, 129, 0.2)', // area bawah garis
+                        borderColor: 'rgba(5, 150, 105, 1)', // warna garis
+                        borderWidth: 2,
+                        tension: 0.4, // bikin garis MELENGKUNG
+                        fill: false, // jangan di-fill supaya fokus ke garis
+                        pointBackgroundColor: 'rgba(5, 150, 105, 1)',
+                        pointRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            grid: {
+                                display: true,
+                                color: '#e0e0e0'
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                precision: 0
+                            },
+                            grid: {
+                                display: true,
+                                color: '#e0e0e0'
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.parsed.y + ' transaksi';
+                                }
+                            }
+                        },
+                        legend: {
+                            display: true
+                        }
+                    }
+                }
+            });
+
+        </script>
     </div>
 </x-app-layout>

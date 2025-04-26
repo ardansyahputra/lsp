@@ -6,13 +6,51 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\TransaksiController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\DB;
+use App\Models\Transaksi;
+use Carbon\Carbon;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
+
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    // Untuk total rupiah
+    $transactions = DB::table('transaksis')
+        ->selectRaw('MONTH(created_at) as month, SUM(total_harga) as total')
+        ->groupBy('month')
+        ->orderBy('month')
+        ->get();
+
+    // Untuk jumlah transaksi
+    $counts = DB::table('transaksis')
+        ->selectRaw('MONTH(created_at) as month, COUNT(*) as count')
+        ->groupBy('month')
+        ->orderBy('month')
+        ->get();
+
+    $months = [];
+    $totals = [];
+    $countsPerMonth = [];
+    $totalAll = 0;
+
+    foreach ($transactions as $t) {
+        $months[] = Carbon::create()->month($t->month)->locale('id')->monthName;
+        $totals[] = $t->total;
+        $totalAll += $t->total;
+    }
+
+    foreach ($counts as $c) {
+        $countsPerMonth[] = $c->count;
+    }
+
+    return view('dashboard', [
+        'transactionMonths' => $months,
+        'transactionTotals' => $totals,
+        'transactionCounts' => $countsPerMonth,
+        'totalRevenue' => $totalAll,
+    ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -42,6 +80,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi.index');
     Route::get('/transaksi/{transaksi}', [TransaksiController::class, 'show'])->name('transaksi.show');
+    Route::get('/transaksi/{id}/download-struk', [\App\Http\Controllers\TransaksiController::class, 'downloadStruk'])->name('transaksi.downloadStruk');
 });
 
 require __DIR__ . '/auth.php';
