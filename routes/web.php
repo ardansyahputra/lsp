@@ -5,6 +5,8 @@ use App\Http\Controllers\KeranjangController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\TransaksiController;
+use App\Models\Kategori;
+use App\Models\Produk;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 use App\Models\Transaksi;
@@ -35,6 +37,12 @@ Route::get('/dashboard', function () {
     $countsPerMonth = [];
     $totalAll = 0;
 
+    $totalCategories = Kategori::count();  // Count the total number of categories
+
+    $totalProducts = Produk::count();  // Count the total number of products
+
+    $totalTransactions = Transaksi::count();
+
     foreach ($transactions as $t) {
         $months[] = Carbon::create()->month($t->month)->locale('id')->monthName;
         $totals[] = $t->total;
@@ -50,6 +58,11 @@ Route::get('/dashboard', function () {
         'transactionTotals' => $totals,
         'transactionCounts' => $countsPerMonth,
         'totalRevenue' => $totalAll,
+        'totalCategories' => $totalCategories, // Pass the totalCategories variable
+        'totalProducts' => $totalProducts,  // Pass the totalProducts variable
+        'totalTransactions' => $totalTransactions,  // Pass the totalProducts variable
+
+        
     ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 

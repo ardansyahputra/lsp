@@ -13,8 +13,9 @@ class TransaksiController extends Controller
      */
     public function index()
     {
-        $transaksis = Transaksi::with('items.produk')->paginate(10)->map(function ($transaksi) {
+        $transaksis = Transaksi::with('items.produk')->get()->map(function ($transaksi) {
             $transaksi->total_item = $transaksi->items->count();
+
 
             return $transaksi;
         });

@@ -41,20 +41,27 @@
                     Your digital technology solution for modern business needs
                 </p>
                 
-                <!-- Login Button -->
-                @if (Route::has('login'))
-                    <div class="flex justify-center">
+                <!-- Login & Register Buttons -->
+                    @if (Route::has('login'))
+                    <div class="flex justify-center space-x-4">
                         @auth
                             <a href="{{ url('/dashboard') }}" class="px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-all duration-300 text-lg shadow-md hover:shadow-lg">
                                 Go to Dashboard
                             </a>
                         @else
                             <a href="{{ route('login') }}" class="px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-all duration-300 text-lg shadow-md hover:shadow-lg transform hover:scale-105">
-                                Get Started - Login
+                                Login
                             </a>
+
+                            @if (Route::has('register'))
+                                <a href="{{ route('register') }}" class="px-8 py-4 bg-gray-300 hover:bg-gray-400 text-gray-900 font-medium rounded-lg transition-all duration-300 text-lg shadow-md hover:shadow-lg transform hover:scale-105">
+                                    Register
+                                </a>
+                            @endif
                         @endauth
                     </div>
-                @endif
+                    @endif
+
             </div>
         </div>
 

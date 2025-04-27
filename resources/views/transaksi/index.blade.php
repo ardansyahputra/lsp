@@ -34,6 +34,12 @@
                                         class="px-6 py-3 bg-gray-50 dark:bg-gray-900 text-left text-xs leading-4 font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                         Tanggal Transaksi
                                     </th>
+
+                                    <th
+                                    class="px-6 py-3 bg-gray-50 dark:bg-gray-900 text-left text-xs leading-4 font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    Nama Produk
+                                    </th>
+
                                     <th
                                         class="px-6 py-3 bg-gray-50 dark:bg-gray-900 text-left text-xs leading-4 font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                         Total Harga
@@ -51,21 +57,23 @@
                             <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                                 @forelse ($transaksis as $transaksi)
                                     <tr>
-                                        <td
-                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
                                             {{ $transaksi->created_at }}
                                         </td>
-                                        <td
-                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+                            
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+                                            @foreach ($transaksi->items as $item)
+                                                {{ $item->produk->nama_produk }}@if(!$loop->last), @endif
+                                            @endforeach
+                                        </td>
+                                    
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
                                             Rp{{ number_format($transaksi->total_harga, 0, ',', '.') }}
                                         </td>
-                                        <td
-                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
                                             {{ $transaksi->total_item }}
                                         </td>
-                                        <td
-                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300 flex items-center space-x-3">
-
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300 flex items-center space-x-3">
                                             <a href="{{ route('transaksi.show', $transaksi) }}"
                                                 class="text-white-700 hover:text-white-900 mr-2" title="Lihat">
                                                 <!-- Eye icon -->
@@ -79,17 +87,17 @@
                                                 </svg>
                                             </a>
                                         </td>
-
                                     </tr>
                                 @empty
                                     <tr>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300"
-                                            colspan="2">
+                                            colspan="5">
                                             Belum ada data transaksi.
                                         </td>
                                     </tr>
                                 @endforelse
                             </tbody>
+                            
                         </table>
                     </div>
                 </div>
