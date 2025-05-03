@@ -20,17 +20,20 @@ class DashboardController extends Controller
         // Hitung jumlah produk
         $totalProducts = Produk::count();
 
+
         // Hitung jumlah transaksi
         $totalTransactions = Transaksi::count();
 
         // Hitung total pendapatan dari semua transaksi
         $totalPendapatan = Transaksi::sum('total_harga');
+        
 
         return view('dashboard', compact(
             'jumlahKategori',
             'jumlahProduk',
             'jumlahTransaksi',
             'totalPendapatan'
+            
         ));
     }
 

@@ -34,24 +34,22 @@
                         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                             <thead>
                                 <tr>
-                                    <th
-                                        class="px-6 py-3 bg-gray-50 dark:bg-gray-900 text-left text-xs leading-4 font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    <th class="px-6 py-3 bg-gray-50 dark:bg-gray-900 text-left text-xs leading-4 font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                        Gambar
+                                    </th>
+                                    <th class="px-6 py-3 bg-gray-50 dark:bg-gray-900 text-left text-xs leading-4 font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                         Nama
                                     </th>
-                                    <th
-                                        class="px-6 py-3 bg-gray-50 dark:bg-gray-900 text-left text-xs leading-4 font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    <th class="px-6 py-3 bg-gray-50 dark:bg-gray-900 text-left text-xs leading-4 font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                         Kategori
                                     </th>
-                                    <th
-                                        class="px-6 py-3 bg-gray-50 dark:bg-gray-900 text-left text-xs leading-4 font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    <th class="px-6 py-3 bg-gray-50 dark:bg-gray-900 text-left text-xs leading-4 font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                         Kuantitas
                                     </th>
-                                    <th
-                                        class="px-6 py-3 bg-gray-50 dark:bg-gray-900 text-left text-xs leading-4 font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    <th class="px-6 py-3 bg-gray-50 dark:bg-gray-900 text-left text-xs leading-4 font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                         Harga
                                     </th>
-                                    <th
-                                        class="px-6 py-3 bg-gray-50 dark:bg-gray-900 text-left text-xs leading-4 font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    <th class="px-6 py-3 bg-gray-50 dark:bg-gray-900 text-left text-xs leading-4 font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                         Aksi
                                     </th>
                                 </tr>
@@ -59,26 +57,38 @@
                             <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                                 @forelse ($produks as $produk)
                                     <tr>
-                                        <td
-                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
-                                            {{ $produk->nama_produk }}
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            @if($produk->gambar)
+                                                <img src="{{ asset('storage/images/products/' . $produk->gambar) }}" 
+                                                     alt="{{ $produk->nama_produk }}"
+                                                     class="h-16 w-16 object-cover rounded">
+                                            @else
+                                                <div class="h-16 w-16 bg-gray-200 rounded flex items-center justify-center">
+                                                    <span class="text-gray-500 text-xs">No Image</span>
+                                                </div>
+                                            @endif
                                         </td>
-                                        <td
-                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+                                        <td class="px-6 py-4">
+                                            <div class="text-sm font-medium text-gray-900 dark:text-gray-100">
+                                                {{ $produk->nama_produk }}
+                                            </div>
+                                            <div class="text-sm text-gray-500 dark:text-gray-400 mt-1 max-w-xs">
+                                                <div class="prose prose-sm dark:prose-invert max-w-none">
+                                                    {{ $produk->deskripsi }}
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
                                             {{ $produk->kategori->nama_kategori }}
                                         </td>
-                                        <td
-                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
                                             {{ $produk->kuantitas }}
                                         </td>
-                                        <td
-                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
                                             Rp{{ number_format($produk->harga, 0, ',', '.') }}
                                         </td>
-                                        <td
-                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300 flex items-center space-x-3">
-
-                                            <!-- Icon Edit (Pencil icon) -->
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300 flex items-center space-x-3">
+                                            <!-- Icon Edit -->
                                             <a href="{{ route('produk.edit', $produk) }}"
                                                 class="text-indigo-700 hover:text-indigo-900" title="Edit">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
@@ -88,7 +98,7 @@
                                                 </svg>
                                             </a>
 
-                                            <!-- Icon Hapus (Trash icon) -->
+                                            <!-- Icon Hapus -->
                                             <form action="{{ route('produk.destroy', $produk) }}" method="POST"
                                                 onsubmit="return confirm('Yakin ingin menghapus?')" class="inline">
                                                 @csrf
@@ -104,12 +114,11 @@
                                                 </button>
                                             </form>
                                         </td>
-
                                     </tr>
                                 @empty
                                     <tr>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300"
-                                            colspan="2">
+                                            colspan="6">
                                             Belum ada data produk.
                                         </td>
                                     </tr>
@@ -147,7 +156,6 @@
         </div>
     </div>
 
-    {{-- Script JavaScript --}}
     <script>
         function openDeleteModal(produkId) {
             const modal = document.getElementById('deleteModal');

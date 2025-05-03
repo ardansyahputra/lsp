@@ -30,26 +30,19 @@
                         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                             <thead>
                                 <tr>
-                                    <th
-                                        class="px-6 py-3 bg-gray-50 dark:bg-gray-900 text-left text-xs leading-4 font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    <th class="px-6 py-3 bg-gray-50 dark:bg-gray-900 text-left text-xs leading-4 font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                         Tanggal Transaksi
                                     </th>
-
-                                    <th
-                                    class="px-6 py-3 bg-gray-50 dark:bg-gray-900 text-left text-xs leading-4 font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                    Nama Produk
+                                    <th class="px-6 py-3 bg-gray-50 dark:bg-gray-900 text-left text-xs leading-4 font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                        Nama Produk
                                     </th>
-
-                                    <th
-                                        class="px-6 py-3 bg-gray-50 dark:bg-gray-900 text-left text-xs leading-4 font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    <th class="px-6 py-3 bg-gray-50 dark:bg-gray-900 text-left text-xs leading-4 font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                         Total Harga
                                     </th>
-                                    <th
-                                        class="px-6 py-3 bg-gray-50 dark:bg-gray-900 text-left text-xs leading-4 font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    <th class="px-6 py-3 bg-gray-50 dark:bg-gray-900 text-left text-xs leading-4 font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                         Jumlah Item
                                     </th>
-                                    <th
-                                        class="px-6 py-3 bg-gray-50 dark:bg-gray-900 text-left text-xs leading-4 font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    <th class="px-6 py-3 bg-gray-50 dark:bg-gray-900 text-left text-xs leading-4 font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                         Aksi
                                     </th>
                                 </tr>
@@ -58,13 +51,22 @@
                                 @forelse ($transaksis as $transaksi)
                                     <tr>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
-                                            {{ $transaksi->created_at }}
+                                            {{ $transaksi->created_at->format('d M Y H:i') }}
                                         </td>
                             
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
-                                            @foreach ($transaksi->items as $item)
-                                                {{ $item->produk->nama_produk }}@if(!$loop->last), @endif
-                                            @endforeach
+                                        <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-300">
+                                            <div class="flex flex-col space-y-1">
+                                                @foreach ($transaksi->items as $item)
+                                                    <div class="flex items-center">
+                                                        @if($item->produk->gambar)
+                                                            <img src="{{ asset('storage/images/products/' . $item->produk->gambar) }}" 
+                                                                 alt="{{ $item->produk->nama_produk }}"
+                                                                 class="h-8 w-8 object-cover rounded mr-2">
+                                                        @endif
+                                                        <span>{{ $item->produk->nama_produk }} ({{ $item->jumlah }})</span>
+                                                    </div>
+                                                @endforeach
+                                            </div>
                                         </td>
                                     
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
@@ -73,10 +75,9 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
                                             {{ $transaksi->total_item }}
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300 flex items-center space-x-3">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
                                             <a href="{{ route('transaksi.show', $transaksi) }}"
-                                                class="text-white-700 hover:text-white-900 mr-2" title="Lihat">
-                                                <!-- Eye icon -->
+                                                class="text-blue-600 hover:text-blue-900" title="Lihat">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline"
                                                     fill="none" viewBox="0 0 24 24" stroke="currentColor"
                                                     stroke-width="2">
@@ -97,7 +98,6 @@
                                     </tr>
                                 @endforelse
                             </tbody>
-                            
                         </table>
                     </div>
                 </div>
@@ -128,7 +128,6 @@
         </div>
     </div>
 
-    {{-- Script JavaScript --}}
     <script>
         function openDeleteModal(produkId) {
             const modal = document.getElementById('deleteModal');

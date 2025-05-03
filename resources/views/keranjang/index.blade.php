@@ -28,6 +28,9 @@
                         <thead>
                             <tr>
                                 <th class="px-6 py-3 bg-gray-50 dark:bg-gray-900 text-left text-xs leading-4 font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    Gambar
+                                </th>
+                                <th class="px-6 py-3 bg-gray-50 dark:bg-gray-900 text-left text-xs leading-4 font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                     Nama Produk
                                 </th>
                                 <th class="px-6 py-3 bg-gray-50 dark:bg-gray-900 text-left text-xs leading-4 font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
@@ -47,6 +50,17 @@
                         <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                             @forelse ($items as $item)
                                 <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        @if($item->produk->gambar)
+                                            <img src="{{ asset('storage/images/products/' . $item->produk->gambar) }}" 
+                                                 alt="{{ $item->produk->nama_produk }}"
+                                                 class="h-16 w-16 object-cover rounded">
+                                        @else
+                                            <div class="h-16 w-16 bg-gray-200 rounded flex items-center justify-center">
+                                                <span class="text-gray-500 text-xs">No Image</span>
+                                            </div>
+                                        @endif
+                                    </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
                                         {{ $item->produk->nama_produk }}
                                     </td>
@@ -78,13 +92,13 @@
                             @empty
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300"
-                                        colspan="9">
+                                        colspan="6">
                                         Belum ada data keranjang.
                                     </td>
                                 </tr>
                             @endforelse
                             <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300" colspan="9">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300" colspan="6">
                                     <a href="{{ route('keranjang.create') }}"
                                         class="inline-block px-4 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition">
                                         + Tambahkan produk ke keranjang belanja
@@ -92,7 +106,7 @@
                                 </td>                                
                             </tr>
                             <tr class="bg-gray-50 dark:bg-gray-700">
-                                <td colspan="3" class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-800 dark:text-gray-200">
+                                <td colspan="4" class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-800 dark:text-gray-200">
                                     Total Harga:
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-800 dark:text-gray-200">

@@ -43,6 +43,8 @@ Route::get('/dashboard', function () {
 
     $totalTransactions = Transaksi::count();
 
+    
+
     foreach ($transactions as $t) {
         $months[] = Carbon::create()->month($t->month)->locale('id')->monthName;
         $totals[] = $t->total;
@@ -61,6 +63,7 @@ Route::get('/dashboard', function () {
         'totalCategories' => $totalCategories, // Pass the totalCategories variable
         'totalProducts' => $totalProducts,  // Pass the totalProducts variable
         'totalTransactions' => $totalTransactions,  // Pass the totalProducts variable
+        
 
         
     ]);
@@ -93,7 +96,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi.index');
     Route::get('/transaksi/{transaksi}', [TransaksiController::class, 'show'])->name('transaksi.show');
-    Route::get('/transaksi/{id}/download-struk', [\App\Http\Controllers\TransaksiController::class, 'downloadStruk'])->name('transaksi.downloadStruk');
+    Route::get('/transaksi/{id}/download-struk', [TransaksiController::class, 'downloadStruk'])->name('transaksi.downloadStruk');
 });
 
 require __DIR__ . '/auth.php';
