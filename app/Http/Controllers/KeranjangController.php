@@ -78,33 +78,43 @@ class KeranjangController extends Controller
      */
     public function store(Request $request)
     {
+        // $validated = $request->validate([
+        //     'produk_id' => ['required', 'exists:produks,id'],
+        //     'jumlah' => ['required', 'integer', 'min:1', function ($attribute, $value, $fail) use ($request) {
+        //         $produk = Produk::find($request->produk_id);
+        //         $itemKeranjang = ItemKeranjang::where('produk_id', $request->produk_id)->first();
+        //         $currentJumlah = $itemKeranjang ? $itemKeranjang->jumlah : 0;
+
+        //         if ($value + $currentJumlah > $produk->kuantitas) {
+        //             return $fail('Jumlah produk melebihi stok yang tersedia.');
+        //         }
+        //     }],
+        // ], [
+        //     'nama_produk.required' => 'Nama produk harus diisi.',
+        //     'jumlah.required' => 'Jumlah produk harus diisi.',
+        //     'jumlah.min' => 'Jumlah produk tidak boleh kurang dari 1.',
+        // ]);
+
         $validated = $request->validate([
             'produk_id' => ['required', 'exists:produks,id'],
-            'jumlah' => ['required', 'integer', 'min:1', function ($attribute, $value, $fail) use ($request) {
-                $produk = Produk::find($request->produk_id);
-                $itemKeranjang = ItemKeranjang::where('produk_id', $request->produk_id)->first();
-                $currentJumlah = $itemKeranjang ? $itemKeranjang->jumlah : 0;
-
-                if ($value + $currentJumlah > $produk->kuantitas) {
-                    return $fail('Jumlah produk melebihi stok yang tersedia.');
-                }
-            }],
+            'jumlah' => ['required', 'integer', 'min:1'],
         ], [
             'nama_produk.required' => 'Nama produk harus diisi.',
             'jumlah.required' => 'Jumlah produk harus diisi.',
             'jumlah.min' => 'Jumlah produk tidak boleh kurang dari 1.',
         ]);
-
+    
         $item = ItemKeranjang::where('produk_id', $validated['produk_id'])->first();
         if ($item) {
             $item->jumlah += $validated['jumlah'];
             $item->save();
             return redirect()->route('keranjang.index')->with('success', 'Produk berhasil ditambahkan.');
         }
-
+    
         ItemKeranjang::create($validated);
         return redirect()->route('keranjang.index')->with('success', 'Produk berhasil dimasukkan.');
     }
+    
 
     /**
      * Remove the specified resource from storage.

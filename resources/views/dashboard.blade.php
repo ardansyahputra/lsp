@@ -1,4 +1,9 @@
 <x-app-layout>
+    <!-- Add title here -->
+    <x-slot name="title">
+        <title>{{ 'DIGITECH | Admin Dashboard' }}</title>
+    </x-slot>
+
     <!-- Header Slot -->
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight text-center">
@@ -6,13 +11,18 @@
         </h2>
     </x-slot>
 
-    <!-- Background Wrapper -->
-    <div class="bg-cover bg-center bg-no-repeat" style="background-image: url('{{ asset('images/cloud.jpg') }}'); min-height: calc(100vh - 80px);">
-        <!-- Inner Content with semi-transparent background -->
-        <div class="bg-white bg-opacity-80 dark:bg-gray-900/80 min-h-screen pt-12 pb-10">
-            <!-- Main Container with centered content -->
+    <!-- Video Background -->
+    <div class="relative flex items-center justify-center min-h-screen overflow-hidden bg-transparent">
+        <!-- Video background -->
+        <video autoplay loop muted class="video-background absolute top-0 left-0 w-full h-full object-cover z-0">
+            <source src="{{ asset('ip16.webm') }}" type="video/webm">
+            Your browser does not support the video tag.
+        </video>
+
+        <!-- Inner content - Hapus bg-white/90 atau ganti dengan bg-transparent -->
+        <div class="relative z-10 w-full bg-transparent min-h-screen pt-12 pb-10">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-                <!-- Welcome Banner - Centered -->
+                <!-- Welcome Banner -->
                 <div class="text-center">
                     <div class="bg-gradient-to-r from-indigo-600 to-purple-700 rounded-xl shadow-xl overflow-hidden inline-block w-full max-w-4xl">
                         <div class="p-8 flex flex-col items-center justify-center">
@@ -31,7 +41,7 @@
                     </div>
                 </div>
 
-                <!-- Tentang Digitech Section - Centered -->
+                <!-- Tentang Digitech Section -->
                 <div class="text-center">
                     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 inline-block w-full max-w-4xl">
                         <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Tentang Digitech</h3>
@@ -41,8 +51,32 @@
                     </div>
                 </div>
 
-                <!-- Stats Cards - Centered Grid -->
-                <div class="flex justify-center">
+                 <!-- Produk Unggulan / Semua Produk -->
+            <div class="flex justify-center">
+                <div class="w-full max-w-6xl">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
+                        @foreach($products as $product)
+                            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition transform hover:-translate-y-1">
+                                <img class="w-full h-auto object-contain max-h-64 bg-white p-2" 
+                                    src="{{ asset('storage/images/products/' . $product->gambar) }}" 
+                                    alt="{{ $product->nama_produk }}">
+                                <div class="p-4 space-y-2">
+                                    <h4 class="text-xl font-semibold text-gray-900 dark:text-white">{{ $product->nama_produk }}</h4>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300 line-clamp-2 leading-relaxed">{{ $product->deskripsi }}</p>
+                                    <div class="mt-2 flex justify-between items-center">
+                                        <span class="text-green-600 dark:text-green-400 font-bold text-base">Rp {{ number_format($product->harga, 0, ',', '.') }}</span>
+                                        <span class="text-sm text-gray-500 dark:text-gray-400">{{ $product->kuantitas }} pcs</span>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+
+
+                 <!-- Stats Cards - Centered Grid -->
+                 <div class="flex justify-center">
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-6xl">
                         <!-- Categories Card -->
                         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-1 transition transform">
@@ -99,7 +133,10 @@
                     </div>
                 </div>
 
-                <!-- Chart Section - Centered -->
+
+
+
+                <!-- Chart and Activity Sections -->
                 <div class="flex justify-center">
                     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md w-full max-w-6xl">
                         <div class="p-6 border-b border-gray-200 dark:border-gray-700 text-center">
@@ -111,7 +148,7 @@
                     </div>
                 </div>
 
-                <!-- Recent Activity - Centered -->
+                <!-- Recent Activity Section -->
                 <div class="flex justify-center">
                     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md w-full max-w-6xl">
                         <div class="p-6 border-b border-gray-200 dark:border-gray-700 text-center">

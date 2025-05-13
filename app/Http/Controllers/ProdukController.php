@@ -31,24 +31,28 @@ class ProdukController extends Controller
      */
     public function store(Request $request)
     {
+        // Validasi input
         $validated = $request->validate([
             'nama_produk' => 'required|string|max:255',
+            'deskripsi' => 'required|string',
+            'harga' => 'required|numeric',
+            'kuantitas' => 'required|integer',
             'kategori_id' => 'required|exists:kategoris,id',
-            'kuantitas' => 'required|integer|min:0',
-            'harga' => 'required|integer|min:0',
-        ], [
-            'nama_produk.required' => 'Nama produk harus diisi.',
-            'kategori_id.required' => 'Kategori produk harus dipilih.',
-            'kuantitas.required' => 'Kuantitas produk harus diisi.',
-            'harga.required' => 'Harga produk harus diisi.',
-            'kuantitas.min' => 'Kuantitas produk tidak boleh kurang dari 0.',
-            'harga.min' => 'Harga produk tidak boleh kurang dari 0.',
+            'gambar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
-
+    
+        // Simpan gambar jika diunggah
+        if ($request->hasFile('gambar')) {
+            $path = $request->file('gambar')->store('images/products', 'public');
+            $validated['gambar'] = basename($path);
+        }
+    
+        // Simpan ke database
         Produk::create($validated);
+    
+        // Redirect ke index dengan pesan sukses
         return redirect()->route('produk.index')->with('success', 'Produk berhasil ditambahkan.');
     }
-
     /**
      * Display the specified resource.
      */

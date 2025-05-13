@@ -43,6 +43,8 @@ Route::get('/dashboard', function () {
 
     $totalTransactions = Transaksi::count();
 
+    $products = Produk::with('kategori')->latest()->take(8)->get();
+
     
 
     foreach ($transactions as $t) {
@@ -63,6 +65,8 @@ Route::get('/dashboard', function () {
         'totalCategories' => $totalCategories, // Pass the totalCategories variable
         'totalProducts' => $totalProducts,  // Pass the totalProducts variable
         'totalTransactions' => $totalTransactions,  // Pass the totalProducts variable
+        'products' => $products, // ✅ Ini penting!
+        
         
 
         

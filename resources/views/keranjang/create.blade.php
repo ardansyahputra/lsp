@@ -21,9 +21,9 @@
                             </option>
                         @endforeach
                     </select>
-                    @error('produk_id')
+                    {{-- @error('produk_id')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                    @enderror
+                    @enderror --}}
                 </div>
 
                 <div class="mb-4">
